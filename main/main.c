@@ -35,6 +35,9 @@
     #include "esp_sleep.h"
     #include "soc/clk_tree_defs.h"
 
+    #include "driver/i2s_std.h"
+    #include "driver/gpio.h"
+
     static const char* TAG = "ESP32";
 #else
 #endif
@@ -51,7 +54,7 @@ void app_main()
 	soc_periph_lcd_clk_src_t lcd_timers[] = (soc_periph_lcd_clk_src_t)SOC_LCD_CLKS;
 
 	for (size_t i = 0; i < (sizeof(lcd_timers) / sizeof(lcd_timers[0])); i++) {
-	    soc_periph_lcd_clk_src_t clk = lcd_timers[i];
+	    soc_periph_lcdo use clk_src_t clk = lcd_timers[i];
 	    esp_log();
 	}
 
@@ -72,4 +75,19 @@ void app_main()
 	// LCD_CLK_SRC_PLL160M ???
     #endif
 
+}
+
+void Db9Clock()
+{
+    i2s_chan_handle_t tx_handle;
+    i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
+
+    i2s_std_config_t std_cfg = {
+        .clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(480000),
+        .slot_cfg = I2S_STD_MSB_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_STEREO),
+        .gpio_cfg = {
+	    .
+        },
+    },
+    }
 }
