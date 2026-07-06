@@ -5524,6 +5524,34 @@
                 "children": [
                     {
                         "children": [],
+                        "depends_on": "SOC_BITSCRAMBLER_SUPPORTED",
+                        "help": "Place BitScrambler control functions into IRAM for better performance and fewer cache misses.",
+                        "id": "BITSCRAMBLER_CTRL_FUNC_IN_IRAM",
+                        "name": "BITSCRAMBLER_CTRL_FUNC_IN_IRAM",
+                        "range": null,
+                        "title": "Place BitScrambler control functions in IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_BITSCRAMBLER_SUPPORTED",
+                        "help": "This will ensure the BitScrambler object will not be allocated from a memory region\nwhere its cache can be disabled.",
+                        "id": "BITSCRAMBLER_OBJ_CACHE_SAFE",
+                        "name": "BITSCRAMBLER_OBJ_CACHE_SAFE",
+                        "range": null,
+                        "title": null,
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "SOC_BITSCRAMBLER_SUPPORTED",
+                "id": "component-config-esp-driver-bitscrambler-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_bitscrambler-Kconfig-1",
+                "title": "ESP-Driver:BitScrambler Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
                         "depends_on": "SOC_GDMA_SUPPORTED",
                         "help": "Place GDMA control functions (like start/stop/append/reset) into IRAM,\nso that these functions can be IRAM-safe and able to be called in the other IRAM interrupt context.",
                         "id": "GDMA_CTRL_FUNC_IN_IRAM",
@@ -5690,6 +5718,208 @@
                 "depends_on": null,
                 "id": "component-config-esp-driver-gpio-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_gpio-Kconfig-1",
                 "title": "ESP-Driver:GPIO Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2C_SUPPORTED",
+                        "help": "Ensure the I2C interrupt is IRAM-Safe by allowing the interrupt handler to be\nexecutable when the cache is disabled (e.g. SPI Flash write).\nnote: This cannot be used in the I2C legacy driver.",
+                        "id": "I2C_ISR_IRAM_SAFE",
+                        "name": "I2C_ISR_IRAM_SAFE",
+                        "range": null,
+                        "title": "I2C ISR IRAM-Safe",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2C_SUPPORTED",
+                        "help": "whether to enable the debug log message for I2C driver.\nNote that this option only controls the I2C driver log, will not affect other drivers.",
+                        "id": "I2C_ENABLE_DEBUG_LOG",
+                        "name": "I2C_ENABLE_DEBUG_LOG",
+                        "range": null,
+                        "title": "Enable I2C debug log",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2C_SUPPORTED",
+                        "help": "Place I2C master ISR handler into IRAM for better performance and fewer cache misses.",
+                        "id": "I2C_MASTER_ISR_HANDLER_IN_IRAM",
+                        "name": "I2C_MASTER_ISR_HANDLER_IN_IRAM",
+                        "range": null,
+                        "title": "Place I2C master ISR handler into IRAM",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "SOC_I2C_SUPPORTED",
+                "id": "component-config-esp-driver-i2c-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_i2c-Kconfig-1",
+                "title": "ESP-Driver:I2C Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2S_SUPPORTED",
+                        "help": "Ensure the I2S interrupt is IRAM-Safe by allowing the interrupt handler to be\nexecutable when the cache is disabled (e.g. SPI Flash write).",
+                        "id": "I2S_ISR_IRAM_SAFE",
+                        "name": "I2S_ISR_IRAM_SAFE",
+                        "range": null,
+                        "title": "I2S ISR IRAM-Safe",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2S_SUPPORTED",
+                        "help": "Place I2S control functions into IRAM,\nso that these functions can be IRAM-safe and able to be called in the other IRAM interrupt context.",
+                        "id": "I2S_CTRL_FUNC_IN_IRAM",
+                        "name": "I2S_CTRL_FUNC_IN_IRAM",
+                        "range": null,
+                        "title": "Place I2S control functions into IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_I2S_SUPPORTED",
+                        "help": "whether to enable the debug log message for I2S driver.\nNote that, this option only controls the I2S driver log, will not affect other drivers.",
+                        "id": "I2S_ENABLE_DEBUG_LOG",
+                        "name": "I2S_ENABLE_DEBUG_LOG",
+                        "range": null,
+                        "title": "Enable I2S debug log",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "SOC_I2S_SUPPORTED",
+                "id": "component-config-esp-driver-i2s-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_i2s-Kconfig-1",
+                "title": "ESP-Driver:I2S Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "Place Parallel IO TX ISR handler in IRAM to reduce latency caused by cache miss.",
+                        "id": "PARLIO_TX_ISR_HANDLER_IN_IRAM",
+                        "name": "PARLIO_TX_ISR_HANDLER_IN_IRAM",
+                        "range": null,
+                        "title": "Place Parallel IO TX ISR handler in IRAM to reduce latency",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "Place Parallel IO RX ISR handler in IRAM to reduce latency caused by cache miss.",
+                        "id": "PARLIO_RX_ISR_HANDLER_IN_IRAM",
+                        "name": "PARLIO_RX_ISR_HANDLER_IN_IRAM",
+                        "range": null,
+                        "title": "Place Parallel IO RX ISR handler in IRAM to reduce latency",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "Enable this option to allow the Parallel IO TX Interrupt Service Routine (ISR)\nto execute even when the cache is disabled. This can be useful in scenarios where the cache\nmight be turned off, but the Parallel IO TX functionality is still required to operate correctly.",
+                        "id": "PARLIO_TX_ISR_CACHE_SAFE",
+                        "name": "PARLIO_TX_ISR_CACHE_SAFE",
+                        "range": null,
+                        "title": "Allow Parallel IO TX ISR to execute when cache is disabled",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "Enable this option to allow the Parallel IO RX Interrupt Service Routine (ISR)\nto execute even when the cache is disabled. This can be useful in scenarios where the cache\nmight be turned off, but the Parallel IO RX functionality is still required to operate correctly.",
+                        "id": "PARLIO_RX_ISR_CACHE_SAFE",
+                        "name": "PARLIO_RX_ISR_CACHE_SAFE",
+                        "range": null,
+                        "title": "Allow Parallel IO RX ISR to execute when cache is disabled",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "This will ensure the driver object will not be allocated from a memory region\nwhere its cache can be disabled.",
+                        "id": "PARLIO_OBJ_CACHE_SAFE",
+                        "name": "PARLIO_OBJ_CACHE_SAFE",
+                        "range": null,
+                        "title": null,
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "If enabled, Parallel IO driver component will:\n1. ignore the global logging settings\n2. compile all log messages into the binary\n3. set the runtime log level to VERBOSE\nPlease enable this option by caution, as it will increase the binary size.",
+                        "id": "PARLIO_ENABLE_DEBUG_LOG",
+                        "name": "PARLIO_ENABLE_DEBUG_LOG",
+                        "range": null,
+                        "title": "Force enable debug log",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_PARLIO_SUPPORTED",
+                        "help": "Ensure the Parallel IO interrupt is IRAM-Safe by allowing the interrupt handler to be\nexecutable when the cache is disabled (e.g. SPI Flash write).",
+                        "id": "PARLIO_ISR_IRAM_SAFE",
+                        "name": "PARLIO_ISR_IRAM_SAFE",
+                        "range": null,
+                        "title": "Parallel IO ISR IRAM-Safe (Deprecated)",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "SOC_PARLIO_SUPPORTED",
+                "id": "component-config-esp-driver-parallel-io-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_parlio-Kconfig-1",
+                "title": "ESP-Driver:Parallel IO Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "FREERTOS_IN_IRAM && SOC_GPSPI_SUPPORTED",
+                        "help": "Normally only the ISR of SPI master is placed in the IRAM, so that it\ncan work without the flash when interrupt is triggered.\nFor other functions, there's some possibility that the flash cache\nmiss when running inside and out of SPI functions, which may increase\nthe interval of SPI transactions.\nEnable this to put ``queue_trans``, ``get_trans_result`` and\n``transmit`` functions into the IRAM to avoid possible cache miss.\n\nThis configuration won't be available if `CONFIG_FREERTOS_IN_IRAM` is disabled.\n\nDuring unit test, this is enabled to measure the ideal case of api.",
+                        "id": "SPI_MASTER_IN_IRAM",
+                        "name": "SPI_MASTER_IN_IRAM",
+                        "range": null,
+                        "title": "Place transmitting functions of SPI master into IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "!HEAP_PLACE_FUNCTION_INTO_FLASH && SOC_GPSPI_SUPPORTED",
+                        "help": "Place the SPI master ISR in to IRAM to avoid possible cache miss.\n\nEnabling this configuration is possible only when HEAP_PLACE_FUNCTION_INTO_FLASH\nis disabled since the spi master uses can allocate transactions buffers into DMA\nmemory section using the heap component API that ipso facto has to be placed in IRAM.\n\nAlso you can forbid the ISR being disabled during flash writing\naccess, by add ESP_INTR_FLAG_IRAM when initializing the driver.",
+                        "id": "SPI_MASTER_ISR_IN_IRAM",
+                        "name": "SPI_MASTER_ISR_IN_IRAM",
+                        "range": null,
+                        "title": "Place SPI master ISR function into IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_GPSPI_SUPPORTED",
+                        "help": "Normally only the ISR of SPI slave is placed in the IRAM, so that it\ncan work without the flash when interrupt is triggered.\nFor other functions, there is some possibility that the flash cache\nmiss when running inside and out of SPI functions, which may increase\nthe interval of SPI transactions.\nEnable this to put ``queue_trans``, ``get_trans_result`` and\n``transmit`` functions into the IRAM to avoid possible cache miss.",
+                        "id": "SPI_SLAVE_IN_IRAM",
+                        "name": "SPI_SLAVE_IN_IRAM",
+                        "range": null,
+                        "title": "Place transmitting functions of SPI slave into IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_GPSPI_SUPPORTED",
+                        "help": "Place the SPI slave ISR in to IRAM to avoid possible cache miss.\n\nAlso you can forbid the ISR being disabled during flash writing\naccess, by add ESP_INTR_FLAG_IRAM when initializing the driver.",
+                        "id": "SPI_SLAVE_ISR_IN_IRAM",
+                        "name": "SPI_SLAVE_ISR_IN_IRAM",
+                        "range": null,
+                        "title": "Place SPI slave ISR function into IRAM",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "SOC_GPSPI_SUPPORTED",
+                "id": "component-config-esp-driver-spi-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_driver_spi-Kconfig-1",
+                "title": "ESP-Driver:SPI Configurations",
                 "type": "menu"
             },
             {
@@ -6642,6 +6872,74 @@
             {
                 "children": [
                     {
+                        "children": [],
+                        "depends_on": "SOC_LCD_RGB_SUPPORTED",
+                        "help": "Ensure the LCD interrupt is IRAM-Safe by allowing the interrupt handler to be\nexecutable when the cache is disabled (e.g. SPI Flash write).\nIf you want the LCD driver to keep flushing the screen even when cache ops disabled,\nyou can enable this option. Note, this will also increase the IRAM usage.",
+                        "id": "LCD_RGB_ISR_IRAM_SAFE",
+                        "name": "LCD_RGB_ISR_IRAM_SAFE",
+                        "range": null,
+                        "title": "RGB LCD ISR IRAM-Safe",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_LCD_RGB_SUPPORTED",
+                        "help": "Reset the GDMA channel every VBlank to stop permanent desyncs from happening.\nOnly need to enable it when in your application, the DMA can't deliver data\nas fast as the LCD consumes it.",
+                        "id": "LCD_RGB_RESTART_IN_VSYNC",
+                        "name": "LCD_RGB_RESTART_IN_VSYNC",
+                        "range": null,
+                        "title": "Always restart RGB LCD transmission in VSYNC",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_MIPI_DSI_SUPPORTED",
+                        "help": "Place DSI ISR handler in IRAM to reduce latency caused by cache miss.",
+                        "id": "LCD_DSI_ISR_HANDLER_IN_IRAM",
+                        "name": "LCD_DSI_ISR_HANDLER_IN_IRAM",
+                        "range": null,
+                        "title": "Place DSI ISR handler in IRAM to reduce latency",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_MIPI_DSI_SUPPORTED",
+                        "help": "Enable this option to allow the DSI Interrupt Service Routine (ISR)\nto execute even when the cache is disabled. This can be useful in scenarios where the cache\nmight be turned off, but the DSI functionality is still required to operate correctly.",
+                        "id": "LCD_DSI_ISR_CACHE_SAFE",
+                        "name": "LCD_DSI_ISR_CACHE_SAFE",
+                        "range": null,
+                        "title": "Allow DSI ISR to execute when cache is disabled",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "SOC_MIPI_DSI_SUPPORTED",
+                        "help": "This will ensure the DSI driver object will always be allocated in internal RAM.",
+                        "id": "LCD_DSI_OBJ_FORCE_INTERNAL",
+                        "name": "LCD_DSI_OBJ_FORCE_INTERNAL",
+                        "range": null,
+                        "title": null,
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "If enabled, LCD driver component will:\n1. ignore the global logging settings\n2. compile all log messages into the binary\n3. set the runtime log level to VERBOSE\nPlease enable this option by caution, as it will increase the binary size.",
+                        "id": "LCD_ENABLE_DEBUG_LOG",
+                        "name": "LCD_ENABLE_DEBUG_LOG",
+                        "range": null,
+                        "title": "Force enable debug log",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": null,
+                "id": "component-config-esp-driver-lcd-controller-configurations-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_lcd-Kconfig-1",
+                "title": "ESP-Driver:LCD Controller Configurations",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
                         "children": [
                             {
                                 "children": [],
@@ -7175,6 +7473,663 @@
                 "depends_on": null,
                 "id": "component-config-power-management-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_pm-Kconfig-1",
                 "title": "Power Management",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": [
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": null,
+                                        "id": "SPIRAM_MODE_QUAD",
+                                        "name": "SPIRAM_MODE_QUAD",
+                                        "range": null,
+                                        "title": null,
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_TYPE>",
+                                                "help": null,
+                                                "id": "SPIRAM_TYPE_AUTO",
+                                                "name": "SPIRAM_TYPE_AUTO",
+                                                "range": null,
+                                                "title": "Auto-detect",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_TYPE>",
+                                                "help": null,
+                                                "id": "SPIRAM_TYPE_ESPPSRAM16",
+                                                "name": "SPIRAM_TYPE_ESPPSRAM16",
+                                                "range": null,
+                                                "title": "ESP-PSRAM16 or APS1604",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_TYPE>",
+                                                "help": null,
+                                                "id": "SPIRAM_TYPE_ESPPSRAM32",
+                                                "name": "SPIRAM_TYPE_ESPPSRAM32",
+                                                "range": null,
+                                                "title": "ESP-PSRAM32",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_TYPE>",
+                                                "help": null,
+                                                "id": "SPIRAM_TYPE_ESPPSRAM64",
+                                                "name": "SPIRAM_TYPE_ESPPSRAM64",
+                                                "range": null,
+                                                "title": "ESP-PSRAM64 or LY68L6400",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": null,
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-type-of-spi-ram-chip-in-use-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-15",
+                                        "name": "SPIRAM_TYPE",
+                                        "title": "Type of SPI RAM chip in use",
+                                        "type": "choice"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_SPEED>",
+                                                "help": null,
+                                                "id": "SPIRAM_SPEED_40M",
+                                                "name": "SPIRAM_SPEED_40M",
+                                                "range": null,
+                                                "title": "40MHz clock speed",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "ESPTOOLPY_FLASHFREQ_80M && <choice SPIRAM_SPEED>",
+                                                "help": null,
+                                                "id": "SPIRAM_SPEED_80M",
+                                                "name": "SPIRAM_SPEED_80M",
+                                                "range": null,
+                                                "title": "80MHz clock speed",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Select the speed for the SPI RAM chip.\nIf SPI RAM is enabled, we only support three combinations of SPI speed mode we supported now:\n\n1. Flash SPI running at 40Mhz and RAM SPI running at 40Mhz\n2. Flash SPI running at 80Mhz and RAM SPI running at 40Mhz\n3. Flash SPI running at 80Mhz and RAM SPI running at 80Mhz\n\nNote: If the third mode(80Mhz+80Mhz) is enabled for SPI RAM of type 32MBit, one of the HSPI/VSPI host\nwill be occupied by the system. Which SPI host to use can be selected by the config item\nSPIRAM_OCCUPY_SPI_HOST. Application code should never touch HSPI/VSPI hardware in this case. The\noption to select 80MHz will only be visible if the flash SPI speed is also 80MHz.\n(ESPTOOLPY_FLASHFREQ_80M is true)",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-set-ram-clock-speed-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-33",
+                                        "name": "SPIRAM_SPEED",
+                                        "title": "Set RAM clock speed",
+                                        "type": "choice"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": null,
+                                        "id": "SPIRAM_SPEED",
+                                        "name": "SPIRAM_SPEED",
+                                        "range": null,
+                                        "title": null,
+                                        "type": "int"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_BOOT_HW_INIT && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "If this is enabled, the PSRAM will be enabled during initial boot. Unless you\nhave specific requirements, you'll want to leave this enabled so memory allocated\nduring boot-up can also be placed in PSRAM.",
+                                                "id": "SPIRAM_BOOT_INIT",
+                                                "name": "SPIRAM_BOOT_INIT",
+                                                "range": null,
+                                                "title": "Initialize PSRAM during startup, including the hardware and memory related configurations",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "If this is enabled, the PSRAM hardware will be initialized during startup.\nEnabling this config does not ensure make sure the availability of the PSRAM for usage,\nbut just initialises the PSRAM hardware.\nThis is necessary to configure PSRAM memory protection during the boot up.",
+                                        "id": "SPIRAM_BOOT_HW_INIT",
+                                        "name": "SPIRAM_BOOT_HW_INIT",
+                                        "range": null,
+                                        "title": "Initialise the PSRAM related hardware",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "If this is enabled, the PSRAM will be pre-configured for memory protection during initial boot.\nThis configuration takes into consideration the PSRAM memory configurations that are performed\nby ESP-IDF's default PSRAM initialization function, esp_psram_init().\nThus, the config is enabled by default when SPIRAM_BOOT_INIT is enabled,\nbecause the function esp_psram_init() would be called in the startup code.\n\nIn case you wish to disable SPIRAM_BOOT_INIT just for delaying the PSRAM initialization and plan\nto use the ESP-IDF's default PSRAM initialization function, esp_psram_init() in the application code,\nyou should still enable this config to enable memory protection for the PSRAM.\n\nNote that enabling this config also considers that the rest of the PSRAM memory that is left after\nthe memory configurations are performed by esp_psram_init(), can be allocated to the heap using the function\nesp_psram_extram_add_to_heap_allocator(), thus configures this region with heap memory protection (RW).\n\nAs an advanced usage, if you plan to initialize the PSRAM memory regions manually by yourself without\nusing the function esp_psram_init(), you should disable this config to avoid any memory protection and\nusage conflicts.",
+                                        "id": "SPIRAM_PRE_CONFIGURE_MEMORY_PROTECTION",
+                                        "name": "SPIRAM_PRE_CONFIGURE_MEMORY_PROTECTION",
+                                        "range": null,
+                                        "title": "Pre-configure memory protection for PSRAM",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM_BOOT_HW_INIT && !SPIRAM_ALLOW_BSS_SEG_EXTERNAL_MEMORY && !SPIRAM_ALLOW_NOINIT_SEG_EXTERNAL_MEMORY && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Normally, if psram initialization is enabled during compile time but not found at runtime, it\nis seen as an error making the CPU panic. If this is enabled, booting will complete\nbut no PSRAM will be available. In particular, it is important to note that when SPIRAM_IGNORE_NOTFOUND\nis enabled, some WIFI related configs will be set to the default value used when SPIRAM is disabled.\nIt can be assumed that by enabling this config, WIFI and LWIP will assume that the current chip does not\nhave SPIRAM. SPIRAM_TRY_ALLOCATE_WIFI_LWIP will not work, buffers in WIFI and LWIP will be set to smaller\nranges and default values. WIFI_CACHE_TX_BUFFER_NUM and ESP_WIFI_AMSDU_TX_ENABLED will be disabled,\nESP_WIFI_TX_BUFFER will be set to ESP_WIFI_DYNAMIC_TX_BUFFER.",
+                                        "id": "SPIRAM_IGNORE_NOTFOUND",
+                                        "name": "SPIRAM_IGNORE_NOTFOUND",
+                                        "range": null,
+                                        "title": "Ignore PSRAM when not found",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_USE>",
+                                                "help": null,
+                                                "id": "SPIRAM_USE_MEMMAP",
+                                                "name": "SPIRAM_USE_MEMMAP",
+                                                "range": null,
+                                                "title": "Integrate RAM into memory map",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_USE>",
+                                                "help": "Add SPI RAM to the capability allocator.\n\nUse heap_caps_malloc(..., MALLOC_CAP_SPIRAM) to explicitly allocate\nfrom SPI RAM. SPI RAM may also be returned by\nheap_caps_malloc(..., MALLOC_CAP_DEFAULT), since this heap is also\nregistered with MALLOC_CAP_DEFAULT.\n\nStandard malloc() does not allocate from SPI RAM by default in this mode.",
+                                                "id": "SPIRAM_USE_CAPS_ALLOC",
+                                                "name": "SPIRAM_USE_CAPS_ALLOC",
+                                                "range": null,
+                                                "title": "Add RAM to heap_caps allocator (malloc() stays internal by default)",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_USE>",
+                                                "help": null,
+                                                "id": "SPIRAM_USE_MALLOC",
+                                                "name": "SPIRAM_USE_MALLOC",
+                                                "range": null,
+                                                "title": "Make RAM allocatable using malloc() as well",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "The SPI RAM can be accessed in multiple methods: by just having it available as an unmanaged\nmemory region in the CPU's memory map, by integrating it in the heap as 'special' memory\nneeding heap_caps_malloc to allocate, or by fully integrating it making malloc() also able to\nreturn SPI RAM pointers.",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-spi-ram-access-method-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-Kconfig.spiram.common-62",
+                                        "name": "SPIRAM_USE",
+                                        "title": "SPI RAM access method",
+                                        "type": "choice"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM_BOOT_INIT && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Runs a rudimentary memory test on initialization. Aborts when memory test fails. Disable this for\nslightly faster startup.",
+                                        "id": "SPIRAM_MEMTEST",
+                                        "name": "SPIRAM_MEMTEST",
+                                        "range": null,
+                                        "title": "Run memory test on SPI RAM initialization",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM_USE_MALLOC && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "If malloc() is capable of also allocating SPI-connected ram, its allocation strategy will prefer to\nallocate chunks less than this size in internal memory, while allocations larger than this will be\ndone from external RAM. If allocation from the preferred region fails, an attempt is made to allocate\nfrom the non-preferred region instead, so malloc() will not suddenly fail when either internal or\nexternal memory is full.",
+                                        "id": "SPIRAM_MALLOC_ALWAYSINTERNAL",
+                                        "name": "SPIRAM_MALLOC_ALWAYSINTERNAL",
+                                        "range": null,
+                                        "title": "Maximum malloc() size, in bytes, to always put in internal memory",
+                                        "type": "int"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "(SPIRAM_USE_CAPS_ALLOC || SPIRAM_USE_MALLOC) && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Try to allocate memories of WiFi and LWIP in SPIRAM firstly. If failed, try to allocate internal\nmemory then.",
+                                        "id": "SPIRAM_TRY_ALLOCATE_WIFI_LWIP",
+                                        "name": "SPIRAM_TRY_ALLOCATE_WIFI_LWIP",
+                                        "range": null,
+                                        "title": "Try to allocate memories of WiFi and LWIP in SPIRAM firstly. If failed, allocate internal memory",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM_USE_MALLOC && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Because the external/internal RAM allocation strategy is not always perfect, it sometimes may happen\nthat the internal memory is entirely filled up. This causes allocations that are specifically done in\ninternal memory, for example the stack for new tasks or memory to service DMA or have memory that's\nalso available when SPI cache is down, to fail. This option reserves a pool specifically for requests\nlike that; the memory in this pool is not given out when a normal malloc() is called.\n\nSet this to 0 to disable this feature.\n\nNote that because FreeRTOS stacks are forced to internal memory, they will also use this memory pool;\nbe sure to keep this in mind when adjusting this value.\n\nNote also that the DMA reserved pool may not be one single contiguous memory region, depending on the\nconfigured size and the static memory usage of the app.",
+                                        "id": "SPIRAM_MALLOC_RESERVE_INTERNAL",
+                                        "name": "SPIRAM_MALLOC_RESERVE_INTERNAL",
+                                        "range": null,
+                                        "title": "Reserve this amount of bytes for data that specifically needs to be in DMA or internal memory",
+                                        "type": "int"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "If enabled, variables with EXT_RAM_BSS_ATTR attribute will be placed in SPIRAM instead of internal DRAM.\nBSS section of `lwip`, `net80211`, `pp`, `bt` libraries will be automatically placed\nin SPIRAM. BSS sections from other object files and libraries can also be placed in SPIRAM through\nlinker fragment scheme `extram_bss`.\n\nNote that the variables placed in SPIRAM using EXT_RAM_BSS_ATTR will be zero initialized.",
+                                        "id": "SPIRAM_ALLOW_BSS_SEG_EXTERNAL_MEMORY",
+                                        "name": "SPIRAM_ALLOW_BSS_SEG_EXTERNAL_MEMORY",
+                                        "range": null,
+                                        "title": "Allow .bss segment placed in external memory",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "If enabled, noinit variables can be placed in PSRAM using EXT_RAM_NOINIT_ATTR.\n\nNote the values placed into this section will not be initialized at startup and should keep its value\nafter software restart.",
+                                        "id": "SPIRAM_ALLOW_NOINIT_SEG_EXTERNAL_MEMORY",
+                                        "name": "SPIRAM_ALLOW_NOINIT_SEG_EXTERNAL_MEMORY",
+                                        "range": null,
+                                        "title": "Allow .noinit segment placed in external memory",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "(SPIRAM_USE_MEMMAP || SPIRAM_USE_CAPS_ALLOC || SPIRAM_USE_MALLOC) && ESP32_REV_MIN_FULL < 300 && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Revision 1 of the ESP32 has a bug that can cause a write to PSRAM not to take place in some situations\nwhen the cache line needs to be fetched from external RAM and an interrupt occurs. This enables a\nfix in the compiler (-mfix-esp32-psram-cache-issue) that makes sure the specific code that is\nvulnerable to this will not be emitted.\n\nThis will also not use any bits of newlib that are located in ROM, opting for a version that is\ncompiled with the workaround and located in flash instead.\n\nThe workaround is not required for ESP32 revision 3 and above.",
+                                        "id": "SPIRAM_CACHE_WORKAROUND",
+                                        "name": "SPIRAM_CACHE_WORKAROUND",
+                                        "range": null,
+                                        "title": "Enable workaround for bug in SPI RAM cache for Rev1 ESP32s",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [
+                                                    {
+                                                        "children": [],
+                                                        "depends_on": "<choice SPIRAM_CACHE_WORKAROUND_STRATEGY>",
+                                                        "help": null,
+                                                        "id": "SPIRAM_CACHE_WORKAROUND_STRATEGY_MEMW",
+                                                        "name": "SPIRAM_CACHE_WORKAROUND_STRATEGY_MEMW",
+                                                        "range": null,
+                                                        "title": "Insert memw after vulnerable instructions (default)",
+                                                        "type": "bool"
+                                                    },
+                                                    {
+                                                        "children": [],
+                                                        "depends_on": "<choice SPIRAM_CACHE_WORKAROUND_STRATEGY>",
+                                                        "help": null,
+                                                        "id": "SPIRAM_CACHE_WORKAROUND_STRATEGY_DUPLDST",
+                                                        "name": "SPIRAM_CACHE_WORKAROUND_STRATEGY_DUPLDST",
+                                                        "range": null,
+                                                        "title": "Duplicate LD/ST for 32-bit, memw for 8/16 bit",
+                                                        "type": "bool"
+                                                    },
+                                                    {
+                                                        "children": [],
+                                                        "depends_on": "<choice SPIRAM_CACHE_WORKAROUND_STRATEGY>",
+                                                        "help": null,
+                                                        "id": "SPIRAM_CACHE_WORKAROUND_STRATEGY_NOPS",
+                                                        "name": "SPIRAM_CACHE_WORKAROUND_STRATEGY_NOPS",
+                                                        "range": null,
+                                                        "title": "Insert nops between vulnerable loads/stores (old strategy, obsolete)",
+                                                        "type": "bool"
+                                                    }
+                                                ],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "Select the workaround strategy. Note that the strategy for precompiled\nlibraries (libgcc, libc, bt, wifi) is not affected by this selection.\n\nUnless you know you need a different strategy, it's suggested you stay\nwith the default MEMW strategy. Note that DUPLDST can interfere with hardware\nencryption and this will be automatically disabled if this workaround is selected.\n'Insert nops' is the workaround that was used in older esp-idf versions. This workaround\nstill can cause faulty data transfers from/to SPI RAM in some situation.",
+                                                "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-spiram-cache-workaround-debugging-workaround-strategy-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-81",
+                                                "name": "SPIRAM_CACHE_WORKAROUND_STRATEGY",
+                                                "title": "Workaround strategy",
+                                                "type": "choice"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": null,
+                                                "id": "SPIRAM_WORKAROUND_NEED_VOLATILE_SPINLOCK",
+                                                "name": "SPIRAM_WORKAROUND_NEED_VOLATILE_SPINLOCK",
+                                                "range": null,
+                                                "title": null,
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-spiram-cache-workaround-debugging-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-79",
+                                        "title": "SPIRAM cache workaround debugging",
+                                        "type": "menu"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: longjmp and setjmp.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBJMP_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBJMP_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's jump related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: abs, div, labs, ldiv, quorem, fpclassify,\nand nan.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBMATH_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBMATH_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's math related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: utoa, itoa, atoi, atol, strtol, and strtoul.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBNUMPARSER_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBNUMPARSER_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's number parsing related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: wcrtomb, fvwrite, wbuf, wsetup, fputwc, wctomb_r,\nungetc, makebuf, fflush, refill, and sccl.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBIO_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBIO_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's I/O related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: asctime, asctime_r, ctime, ctime_r, lcltime, lcltime_r,\ngmtime, gmtime_r, strftime, mktime, tzset_r, tzset, time, gettzinfo, systimes, month_lengths,\ntimelocal, tzvars, tzlock, tzcalc_limits, and strptime.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBTIME_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBTIME_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's time related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: ctype_, toupper, tolower, toascii, strupr, bzero,\nisalnum, isalpha, isascii, isblank, iscntrl, isdigit, isgraph, islower, isprint, ispunct,\nisspace, and isupper.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBCHAR_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBCHAR_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's characters related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: memccpy, memchr memmove, and memrchr.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBMEM_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBMEM_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's memory related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: strcasecmp, strcasestr, strchr, strcoll,\nstrcpy, strcspn, strdup, strdup_r, strlcat, strlcpy, strlen, strlwr, strncasecmp,\nstrncat, strncmp, strncpy, strndup, strndup_r, strrchr, strsep, strspn, strstr,\nstrtok_r, and strupr.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBSTR_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBSTR_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's string related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: srand, rand, and rand_r.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBRAND_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBRAND_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's random related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: environ, envlock, and getenv_r.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBENV_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBENV_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's environment related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: lock, isatty, fclose, open, close, creat, read,\nrshift, sbrk, stdio, syssbrk, sysclose, sysopen, creat, sysread, syswrite, impure, fwalk,\nand findfp.\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBFILE_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBFILE_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's file related functions in IRAM",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_CACHE_WORKAROUND && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The functions affected by this option are: raise and system\nPutting these function in IRAM will allow them to be called when flash cache is disabled\nbut it will also reduce the available size of free IRAM for the user application.",
+                                                "id": "SPIRAM_CACHE_LIBMISC_IN_IRAM",
+                                                "name": "SPIRAM_CACHE_LIBMISC_IN_IRAM",
+                                                "range": null,
+                                                "title": "Put libc's miscellaneous functions in IRAM, see help",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-spiram-workaround-libraries-placement-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-111",
+                                        "title": "SPIRAM workaround libraries placement",
+                                        "type": "menu"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM_BANKSWITCH_ENABLE && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "Select the amount of banks reserved for bank switching. Note that the amount of RAM allocatable with\nmalloc/esp_heap_alloc_caps will decrease by 32K for each page reserved here.\n\nNote that this reservation is only actually done if your program actually uses the himem API. Without\nany himem calls, the reservation is not done and the original amount of memory will be available\nto malloc/esp_heap_alloc_caps.",
+                                                "id": "SPIRAM_BANKSWITCH_RESERVE",
+                                                "name": "SPIRAM_BANKSWITCH_RESERVE",
+                                                "range": null,
+                                                "title": "Amount of 32K pages to reserve for bank switching",
+                                                "type": "int"
+                                            }
+                                        ],
+                                        "depends_on": "(SPIRAM_USE_MEMMAP || SPIRAM_USE_CAPS_ALLOC || SPIRAM_USE_MALLOC) && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "The ESP32 only supports 4MiB of external RAM in its address space. The hardware does support larger\nmemories, but these have to be bank-switched in and out of this address space. Enabling this allows you\nto reserve some MMU pages for this, which allows the use of the esp_himem api to manage these banks.\n\n#Note that this is limited to 62 banks, as esp_psram_extram_writeback_cache needs some kind of mapping of\n#some banks below that mark to work. We cannot at this moment guarantee this to exist when himem is\n#enabled.\n\nIf spiram 2T mode is enabled, the size of 64Mbit psram will be changed as 32Mbit, so himem will be\nunusable.",
+                                        "id": "SPIRAM_BANKSWITCH_ENABLE",
+                                        "name": "SPIRAM_BANKSWITCH_ENABLE",
+                                        "range": null,
+                                        "title": "Enable bank switching for >4MiB external RAM",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_OCCUPY_SPI_HOST>",
+                                                "help": null,
+                                                "id": "SPIRAM_OCCUPY_HSPI_HOST",
+                                                "name": "SPIRAM_OCCUPY_HSPI_HOST",
+                                                "range": null,
+                                                "title": "HSPI host (SPI2)",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_OCCUPY_SPI_HOST>",
+                                                "help": null,
+                                                "id": "SPIRAM_OCCUPY_VSPI_HOST",
+                                                "name": "SPIRAM_OCCUPY_VSPI_HOST",
+                                                "range": null,
+                                                "title": "VSPI host (SPI3)",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice SPIRAM_OCCUPY_SPI_HOST>",
+                                                "help": null,
+                                                "id": "SPIRAM_OCCUPY_NO_HOST",
+                                                "name": "SPIRAM_OCCUPY_NO_HOST",
+                                                "range": null,
+                                                "title": "Will not try to use any host, will abort if not able to use the PSRAM",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM_SPEED_80M && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "When both flash and PSRAM is working under 80MHz, and the PSRAM is of type 32MBit, one of the HSPI/VSPI\nhost will be used to output the clock. Select which one to use here.",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-spi-host-to-use-for-32mbit-psram-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-262",
+                                        "name": "SPIRAM_OCCUPY_SPI_HOST",
+                                        "title": "SPI host to use for 32MBit PSRAM",
+                                        "type": "choice"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The PSRAM CLOCK IO can be any unused GPIO, user can config it based on hardware design. If user use\n1.8V flash and 1.8V psram, this value can only be one of 6, 7, 8, 9, 10, 11, 16, 17.\n\nIf configured to the same pin as Flash, PSRAM shouldn't be rev0. Contact Espressif for more\ninformation.",
+                                                "id": "D0WD_PSRAM_CLK_IO",
+                                                "name": "D0WD_PSRAM_CLK_IO",
+                                                "range": null,
+                                                "title": "PSRAM CLK IO number",
+                                                "type": "int"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The PSRAM CS IO can be any unused GPIO, user can config it based on hardware design. If user use\n1.8V flash and 1.8V psram, this value can only be one of 6, 7, 8, 9, 10, 11, 16, 17.",
+                                                "id": "D0WD_PSRAM_CS_IO",
+                                                "name": "D0WD_PSRAM_CS_IO",
+                                                "range": null,
+                                                "title": "PSRAM CS IO number",
+                                                "type": "int"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-psram-clock-and-cs-io-for-esp32-dowd-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-279",
+                                        "title": "PSRAM clock and cs IO for ESP32-DOWD",
+                                        "type": "menu"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "User can config it based on hardware design. For ESP32-D2WD chip, the psram can only be 1.8V psram,\nso this value can only be one of 6, 7, 8, 9, 10, 11, 16, 17.\n\nIf configured to the same pin (GPIO6) as Flash, PSRAM shouldn't be rev0. Contact Espressif for more\ninformation.",
+                                                "id": "D2WD_PSRAM_CLK_IO",
+                                                "name": "D2WD_PSRAM_CLK_IO",
+                                                "range": null,
+                                                "title": "PSRAM CLK IO number",
+                                                "type": "int"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "User can config it based on hardware design. For ESP32-D2WD chip, the psram can only be 1.8V psram,\nso this value can only be one of 6, 7, 8, 9, 10, 11, 16, 17.",
+                                                "id": "D2WD_PSRAM_CS_IO",
+                                                "name": "D2WD_PSRAM_CS_IO",
+                                                "range": null,
+                                                "title": "PSRAM CS IO number",
+                                                "type": "int"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-psram-clock-and-cs-io-for-esp32-d2wd-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-303",
+                                        "title": "PSRAM clock and cs IO for ESP32-D2WD",
+                                        "type": "menu"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                                "help": "The PSRAM CS IO can be any unused GPIO, user can config it based on hardware design.\n\nFor ESP32-PICO chip, the psram share clock with flash, so user do not need to configure the clock\nIO.\nFor the reference hardware design, please refer to\nhttps://www.espressif.com/sites/default/files/documentation/esp32-pico-d4_datasheet_en.pdf",
+                                                "id": "PICO_PSRAM_CS_IO",
+                                                "name": "PICO_PSRAM_CS_IO",
+                                                "range": null,
+                                                "title": "PSRAM CS IO number",
+                                                "type": "int"
+                                            }
+                                        ],
+                                        "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-psram-clock-and-cs-io-for-esp32-pico-d4-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-327",
+                                        "title": "PSRAM clock and cs IO for ESP32-PICO-D4",
+                                        "type": "menu"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "IDF_TARGET_ESP32 && (ESPTOOLPY_FLASHMODE_DIO || ESPTOOLPY_FLASHMODE_DOUT) && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "This setting is only used if the SPI flash pins have been overridden by setting the eFuses\nSPI_PAD_CONFIG_xxx, and the SPI flash mode is DIO or DOUT.\n\nWhen this is the case, the eFuse config only defines 3 of the 4 Quad I/O data pins. The WP pin (aka\nESP32 pin \"SD_DATA_3\" or SPI flash pin \"IO2\") is not specified in eFuse. The psram only has QPI\nmode, so a WP pin setting is necessary.\n\nIf this config item is set to N (default), the correct WP pin will be automatically used for any\nEspressif chip or module with integrated flash. If a custom setting is needed, set this config item\nto Y and specify the GPIO number connected to the WP pin.\n\nWhen flash mode is set to QIO or QOUT, the PSRAM WP pin will be set the same as the SPI Flash WP pin\nconfigured in the bootloader.",
+                                        "id": "SPIRAM_CUSTOM_SPIWP_SD3_PIN",
+                                        "name": "SPIRAM_CUSTOM_SPIWP_SD3_PIN",
+                                        "range": null,
+                                        "title": "Use custom SPI PSRAM WP(SD3) Pin when flash pins set in eFuse (read help)",
+                                        "type": "bool"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "IDF_TARGET_ESP32 && (ESPTOOLPY_FLASHMODE_DIO || ESPTOOLPY_FLASHMODE_DOUT) && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "The option \"Use custom SPI PSRAM WP(SD3) pin\" must be set or this value is ignored\n\nIf burning a customized set of SPI flash pins in eFuse and using DIO or DOUT mode for flash, set this\nvalue to the GPIO number of the SPIRAM WP pin.",
+                                        "id": "SPIRAM_SPIWP_SD3_PIN",
+                                        "name": "SPIRAM_SPIWP_SD3_PIN",
+                                        "range": null,
+                                        "title": "Custom SPI PSRAM WP(SD3) Pin",
+                                        "type": "int"
+                                    },
+                                    {
+                                        "children": [],
+                                        "depends_on": "SPIRAM && SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                        "help": "Enable this option to fix single bit errors inside 64Mbit PSRAM.\n\nSome 64Mbit PSRAM chips have a hardware issue in the RAM which causes bit errors at multiple\nfixed bit positions.\n\nNote: If this option is enabled, the 64Mbit PSRAM chip will appear to be 32Mbit in size.\nApplications will not be affected unless the use the esp_himem APIs, which are not supported\nin 2T mode.",
+                                        "id": "SPIRAM_2T_MODE",
+                                        "name": "SPIRAM_2T_MODE",
+                                        "range": null,
+                                        "title": "Enable SPI PSRAM 2T mode",
+                                        "type": "bool"
+                                    }
+                                ],
+                                "depends_on": "SPIRAM && !APP_BUILD_TYPE_PURE_RAM_APP",
+                                "id": "component-config-esp-psram-support-for-external-spi-connected-ram-spi-ram-config-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-.-esp32-Kconfig.spiram-8",
+                                "title": "SPI RAM config",
+                                "type": "menu"
+                            }
+                        ],
+                        "depends_on": "!APP_BUILD_TYPE_PURE_RAM_APP",
+                        "help": "This enables support for an external SPI RAM chip, connected in parallel with the\nmain SPI flash chip.",
+                        "id": "SPIRAM",
+                        "name": "SPIRAM",
+                        "range": null,
+                        "title": "Support for external, SPI-connected RAM",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "!APP_BUILD_TYPE_PURE_RAM_APP",
+                "id": "component-config-esp-psram-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_psram-Kconfig-1",
+                "title": "ESP PSRAM",
+                "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "Place ring buffer functions in IRAM for better performance.\nBy default, ring buffer functions are placed in Flash to save IRAM.\nEnable this option if you need maximum performance for ring buffer operations.\n\nNote: This option increases IRAM usage.",
+                        "id": "RINGBUF_IN_IRAM",
+                        "name": "RINGBUF_IN_IRAM",
+                        "range": null,
+                        "title": "Place ring buffer functions in IRAM",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "!RINGBUF_IN_IRAM",
+                        "help": "Place ISR ringbuf functions (like xRingbufferSendFromISR/xRingbufferReceiveFromISR) into flash.\nThis frees up IRAM, but the functions can no longer be called when the cache is disabled\nor from an IRAM interrupt context.\n\nThis option is not compatible with ESP-IDF drivers which are configured to\nrun the ISR from an IRAM context, e.g. CONFIG_UART_ISR_IN_IRAM.",
+                        "id": "RINGBUF_PLACE_ISR_FUNCTIONS_INTO_FLASH",
+                        "name": "RINGBUF_PLACE_ISR_FUNCTIONS_INTO_FLASH",
+                        "range": null,
+                        "title": "Place ISR ringbuf functions into flash",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": null,
+                "id": "component-config-esp-ringbuf-home-jmuzy-.espressif-v6.0.2-esp-idf-components-esp_ringbuf-Kconfig-1",
+                "title": "ESP Ringbuf",
                 "type": "menu"
             },
             {

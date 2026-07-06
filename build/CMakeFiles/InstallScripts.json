@@ -72,6 +72,17 @@
 		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_libc/src/port/cmake_install.cmake",
 		"/home/jmuzy/Programming/esp/db9/build/esp-idf/pthread/cmake_install.cmake",
 		"/home/jmuzy/Programming/esp/db9/build/esp-idf/cxx/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_hal_i2c/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_ringbuf/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_driver_i2c/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_psram/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_driver_spi/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_hal_parlio/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_driver_bitscrambler/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_driver_parlio/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_hal_lcd/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_driver_i2s/cmake_install.cmake",
+		"/home/jmuzy/Programming/esp/db9/build/esp-idf/esp_lcd/cmake_install.cmake",
 		"/home/jmuzy/Programming/esp/db9/build/esp-idf/main/cmake_install.cmake"
 	],
 	"Parallel" : false
