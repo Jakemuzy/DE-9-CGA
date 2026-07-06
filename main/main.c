@@ -2,19 +2,40 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
+#define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
+#include "esp_log.h"
+#include "esp_sleep.h"
+#include "soc/clk_tree_defs.h"
+
+#include "esp_lcd_panel_rgb.h"
+#include "esp_lcd_panel_ops.h"
+#include "driver/gpio.h"
+
 // Measured in Hz
+// Center of acceptable the range for desired
+#define DESIRED_CLOCK_RATE 14318180
 #define VSYNC_RATE 60
 #define HSYNC_RATE 15750
 
-#define GROUND_ONE 1
-#define GROUND_TWO 2
-#define RED 3
-#define GREEN 4
-#define BLUE 5
-#define INTENSITY 6
-// Pin 7 not in use for CGA 
-#define H_SYNC 8
-#define V_SYNC 9
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 200
+
+#define RED          GPIO_NUM_4
+#define GREEN        GPIO_NUM_5
+#define BLUE         GPIO_NUM_6
+#define INTENSITY    GPIO_NUM_7
+#define H_SYNC       GPIO_NUM_15
+#define V_SYNC       GPIO_NUM_16
+
+// Unused pins, required to be specified
+#define PCLK_PIN     GPIO_NUM_17  
+#define DUMMY_A      GPIO_NUM_9
+#define DUMMY_B      GPIO_NUM_10
+#define DUMMY_C      GPIO_NUM_11
+#define DUMMY_D      GPIO_NUM_12
 
 /* 
    FOREWORD:
@@ -29,47 +50,133 @@
 */
 
 
-#ifdef ESP32
-    #define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
-    #include "esp_log.h"
-    #include "esp_sleep.h"
-    #include "soc/clk_tree_defs.h"
+static const char* TAG = "ESP32";
 
-    static const char* TAG = "ESP32";
-#else
-#endif
+uint8_t custom_canvas[SCREEN_WIDTH * SCREEN_HEIGHT];
+uint8_t *cga_frame_buffer = NULL;
+esp_lcd_panel_handle_t panel_handle = NULL;
 
-const uint32_t CLOCK_RATE = 0;
+void Db9Clock()
+{
+    // Define a single configuration for the entire RGB panel
+    esp_lcd_rgb_panel_config_t panel_cfg = {
+        .clk_src = LCD_CLK_SRC_DEFAULT,
+        .pclk_gpio_num = PCLK_PIN, 
+        .vsync_gpio_num = V_SYNC,         
+        .hsync_gpio_num = H_SYNC,         
+        .de_gpio_num = -1,                // CGA doesn't use Data Enable 
+
+        .data_width = 8,                 
+	.in_color_format = LCD_COLOR_FMT_RGB888,
+        .data_gpio_nums = {
+            RED,        
+            GREEN,      
+            BLUE,       
+            INTENSITY,
+	    // Unused dummies since requires 8 bit width
+	    DUMMY_A, 
+	    DUMMY_B, 
+	    DUMMY_C,
+	    DUMMY_D
+        },
+
+	.user_fbs = {
+	    custom_canvas
+	},
+
+
+	// Porch values straight from IBM hardware documentaiton for CGA, what a weird standard
+        .timings = {
+            .pclk_hz = DESIRED_CLOCK_RATE,
+            .h_res = SCREEN_WIDTH,     
+            .v_res = SCREEN_HEIGHT,    
+	    .hsync_front_porch = 16,
+	    .hsync_pulse_width = 72,
+	    .hsync_back_porch = 180,  
+
+	    .vsync_front_porch = 4,
+	    .vsync_pulse_width = 3,
+	    .vsync_back_porch = 55,    
+            .flags = {
+                .hsync_idle_low = 1,   // CGA active high
+                .vsync_idle_low = 1,
+            },
+        },
+        .flags = {
+            .fb_in_psram = false,      
+	    .disp_active_low = 1,
+        },
+    };
+
+    ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(&panel_cfg, &panel_handle));
+    ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
+    ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
+}
 
 void app_main()
 {
-    #ifdef ESP32
-        //SOC_LCD_CLKS
-        //CLOCK_RATE = // LCD_BUS
-	
-	// Probably I2s, or lcd bus should be used
-	soc_periph_lcd_clk_src_t lcd_timers[] = (soc_periph_lcd_clk_src_t)SOC_LCD_CLKS;
+    ESP_LOGI(TAG, "Initializing RGB panel.");
+    Db9Clock();
+    ESP_LOGI(TAG, "Finished initializing RGB panel.");
 
-	for (size_t i = 0; i < (sizeof(lcd_timers) / sizeof(lcd_timers[0])); i++) {
-	    soc_periph_lcd_clk_src_t clk = lcd_timers[i];
-	    esp_log();
+    ESP_LOGI(TAG, "Drawing circle...");
+    void *fb_pointer = NULL;
+    ESP_ERROR_CHECK(esp_lcd_rgb_panel_get_frame_buffer(panel_handle, 1, &fb_pointer));
+
+    cga_frame_buffer = custom_canvas;
+    memset(cga_frame_buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT);
+
+    uint16_t radius = SCREEN_WIDTH / 4;
+    uint16_t center_x = SCREEN_WIDTH / 2,
+	     center_y = SCREEN_HEIGHT / 2;
+
+    float inner_radius_sq = (radius - 3) * (radius - 3),
+          outer_radius_sq = (radius + 3) * (radius + 3);
+
+    for (int y = 0; y < SCREEN_HEIGHT; y++) {
+	for (int x = 0; x < SCREEN_WIDTH; x++) {
+
+	    float dist_to_center = 
+		    (x - center_x) * (x - center_x) +
+		    (y - center_y) * (y - center_y);
+
+	    // Color perimeter black only
+	    unsigned int color = 0x00;
+	    if (dist_to_center >= inner_radius_sq && 
+		dist_to_center <= outer_radius_sq ){
+		color = 0xFF;
+	    }
+
+	    int idx = y * SCREEN_WIDTH + x;
+	    cga_frame_buffer[idx] = color;
 	}
+    }
+    ESP_LOGI(TAG, "Finished drawing circle.");
 
-	esp_err_t err = esp_clk_tree_src_get_freq_hz(
-	    clk, 
-	    ESP_CLK_TREE_SRC_FREQ_PRECISIN_EXACT,
-	    &CLOCK_RATE
-	);
 
-	if (err != ESP_OK) {
-	    ESP_LOGW(TAG, "Clock rate could not be determined for the lcd timer");
+    while (1) {
+	// Temporary for dumping circle data
+	    
+	printf("\n---START_FRAME---\n");
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
+	    printf("%02X", custom_canvas[i]);
+
+	    if ((i + 1) % SCREEN_WIDTH == 0) {
+		printf("\n");
+	    }
 	}
-	else {
-	    ESP_LOGV(TAG, "Clock rate is %lu\n", CLOCK_RATE);
-	    esp_deep_sleep_start();
-	}
+	printf("---END_FRAME---\n");
 
-	// LCD_CLK_SRC_PLL160M ???
-    #endif
-
+	vTaskDelay(pdMS_TO_TICKS(3000));
+    }
 }
+
+
+
+// REMEMBER: hsync and vsync are typically pulled high when writing. When pulled low it tells
+// the hardware to switch scanlines. Vsync is pulled low when it hits the bottom right of the screen
+// indicating that a new frame is about to be drawn and to move the ray to the top left of the screen.
+// Hsync is pulled low when it hits the right of the screen, allowing for hte rays to move to the left
+// of the screen on the next scanline. We can encode this information via the memory, since each distance
+// in memory equates to consistent timing. So we would load the entire dma buffer with our image and 
+// let the parallel i2s send out the data constantly
