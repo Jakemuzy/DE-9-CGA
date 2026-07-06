@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 #include "esp_log.h"
 #include "esp_sleep.h"
@@ -26,7 +29,13 @@
 #define INTENSITY    GPIO_NUM_7
 #define H_SYNC       GPIO_NUM_15
 #define V_SYNC       GPIO_NUM_16
-#define PCLK_PIN     GPIO_NUM_17  // Unused, required to be specified
+
+// Unused pins, required to be specified
+#define PCLK_PIN     GPIO_NUM_17  
+#define DUMMY_A      GPIO_NUM_9
+#define DUMMY_B      GPIO_NUM_10
+#define DUMMY_C      GPIO_NUM_11
+#define DUMMY_D      GPIO_NUM_12
 
 /* 
    FOREWORD:
@@ -43,9 +52,9 @@
 
 static const char* TAG = "ESP32";
 
-void app_main()
-{
-}
+uint8_t custom_canvas[SCREEN_WIDTH * SCREEN_HEIGHT];
+uint8_t *cga_frame_buffer = NULL;
+esp_lcd_panel_handle_t panel_handle = NULL;
 
 void Db9Clock()
 {
@@ -57,13 +66,24 @@ void Db9Clock()
         .hsync_gpio_num = H_SYNC,         
         .de_gpio_num = -1,                // CGA doesn't use Data Enable 
 
-        .data_width = 4,                  
+        .data_width = 8,                 
+	.in_color_format = LCD_COLOR_FMT_RGB888,
         .data_gpio_nums = {
             RED,        
             GREEN,      
             BLUE,       
-            INTENSITY   
+            INTENSITY,
+	    // Unused dummies since requires 8 bit width
+	    DUMMY_A, 
+	    DUMMY_B, 
+	    DUMMY_C,
+	    DUMMY_D
         },
+
+	.user_fbs = {
+	    custom_canvas
+	},
+
 
 	// Porch values straight from IBM hardware documentaiton for CGA, what a weird standard
         .timings = {
@@ -84,15 +104,73 @@ void Db9Clock()
         },
         .flags = {
             .fb_in_psram = false,      
+	    .disp_active_low = 1,
         },
     };
-
-    esp_lcd_panel_handle_t panel_handle = NULL;
 
     ESP_ERROR_CHECK(esp_lcd_new_rgb_panel(&panel_cfg, &panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
 }
+
+void app_main()
+{
+    ESP_LOGI(TAG, "Initializing RGB panel.");
+    Db9Clock();
+    ESP_LOGI(TAG, "Finished initializing RGB panel.");
+
+    ESP_LOGI(TAG, "Drawing circle...");
+    void *fb_pointer = NULL;
+    ESP_ERROR_CHECK(esp_lcd_rgb_panel_get_frame_buffer(panel_handle, 1, &fb_pointer));
+
+    cga_frame_buffer = custom_canvas;
+    memset(cga_frame_buffer, 0x00, SCREEN_WIDTH * SCREEN_HEIGHT);
+
+    uint16_t radius = SCREEN_WIDTH / 4;
+    uint16_t center_x = SCREEN_WIDTH / 2,
+	     center_y = SCREEN_HEIGHT / 2;
+
+    float inner_radius_sq = (radius - 3) * (radius - 3),
+          outer_radius_sq = (radius + 3) * (radius + 3);
+
+    for (int y = 0; y < SCREEN_HEIGHT; y++) {
+	for (int x = 0; x < SCREEN_WIDTH; x++) {
+
+	    float dist_to_center = 
+		    (x - center_x) * (x - center_x) +
+		    (y - center_y) * (y - center_y);
+
+	    // Color perimeter black only
+	    unsigned int color = 0x00;
+	    if (dist_to_center >= inner_radius_sq && 
+		dist_to_center <= outer_radius_sq ){
+		color = 0xFF;
+	    }
+
+	    int idx = y * SCREEN_WIDTH + x;
+	    cga_frame_buffer[idx] = color;
+	}
+    }
+    ESP_LOGI(TAG, "Finished drawing circle.");
+
+
+    while (1) {
+	// Temporary for dumping circle data
+	    
+	printf("\n---START_FRAME---\n");
+	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
+	    printf("%02X", custom_canvas[i]);
+
+	    if ((i + 1) % SCREEN_WIDTH == 0) {
+		printf("\n");
+	    }
+	}
+	printf("---END_FRAME---\n");
+
+	vTaskDelay(pdMS_TO_TICKS(3000));
+    }
+}
+
 
 
 // REMEMBER: hsync and vsync are typically pulled high when writing. When pulled low it tells
