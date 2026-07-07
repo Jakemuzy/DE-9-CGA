@@ -163,19 +163,24 @@ void app_main()
         }
         ESP_LOGI(TAG, "Finished drawing circle.");
 
-	// Temporary for dumping circle data
-	    
-	printf("\n---START_FRAME---\n");
-	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
-	    printf("%02X", custom_canvas[i]);
+	#if DEBUG
 
-	    if ((i + 1) % SCREEN_WIDTH == 0) {
-		printf("\n");
-	    }
-	}
-	printf("---END_FRAME---\n");
+		// Temporary for dumping circle data
+		FILE *fptr = fopen("output.txt", "wb");
+		char size_header[10];
 
-	vTaskDelay(pdMS_TO_TICKS(500));
+		snprintf(size_header, 10, "%d, %d\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+		fprintf(fptr, "%s", size_header);
+		fwrite(cga_frame_buffer, 
+			sizeof(custom_canvas[0]), 
+			sizeof(custom_canvas) / sizeof(custom_canvas[0]), 
+			fptr
+		);
+		fclose(fptr);
+
+	#endif
+
+	vTaskDelay(pdMS_TO_TICKS(3000));
     }
 }
 
