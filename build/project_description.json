@@ -1,7 +1,7 @@
 {
     "version":            "1.3",
     "project_name":       "db9",
-    "project_version":    "c2edf0f-dirty",
+    "project_version":    "19a3bb0-dirty",
     "project_path":       "/home/jmuzy/Programming/esp/db9",
     "idf_path":           "/home/jmuzy/.espressif/v6.0.2/esp-idf",
     "build_dir":          "/home/jmuzy/Programming/esp/db9/build",
@@ -831,7 +831,7 @@
             "type": "LIBRARY",
             "lib": "__idf_main",
             "reqs": [],
-            "priv_reqs": [ "spi_flash", "esp_lcd" ],
+            "priv_reqs": [ "spi_flash", "esp_lcd", "esp_timer" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/jmuzy/Programming/esp/db9/build/esp-idf/main/libmain.a",
@@ -2745,7 +2745,7 @@
             "source": "project_components",
             "lib": "__idf_main",
             "reqs": [],
-            "priv_reqs": [ "spi_flash", "esp_lcd" ],
+            "priv_reqs": [ "spi_flash", "esp_lcd", "esp_timer" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "include_dirs": []

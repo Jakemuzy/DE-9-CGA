@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -8,6 +9,7 @@
 #define LOG_LOCAL_LEVEL ESP_LOG_VERBOSE
 #include "esp_log.h"
 #include "esp_sleep.h"
+#include "esp_timer.h"
 #include "soc/clk_tree_defs.h"
 
 #include "esp_lcd_panel_rgb.h"
@@ -133,28 +135,34 @@ void app_main()
     float inner_radius_sq = (radius - 3) * (radius - 3),
           outer_radius_sq = (radius + 3) * (radius + 3);
 
-    for (int y = 0; y < SCREEN_HEIGHT; y++) {
-	for (int x = 0; x < SCREEN_WIDTH; x++) {
-
-	    float dist_to_center = 
-		    (x - center_x) * (x - center_x) +
-		    (y - center_y) * (y - center_y);
-
-	    // Color perimeter black only
-	    unsigned int color = 0x00;
-	    if (dist_to_center >= inner_radius_sq && 
-		dist_to_center <= outer_radius_sq ){
-		color = 0xFF;
-	    }
-
-	    int idx = y * SCREEN_WIDTH + x;
-	    cga_frame_buffer[idx] = color;
-	}
-    }
-    ESP_LOGI(TAG, "Finished drawing circle.");
-
-
     while (1) {
+
+        int64_t ms = esp_timer_get_time() / 1000;
+
+        for (int y = 0; y < SCREEN_HEIGHT; y++) {
+	    for (int x = 0; x < SCREEN_WIDTH; x++) {
+
+	        float dist_to_center = 
+		        (x - center_x) * (x - center_x) +
+		        (y - center_y) * (y - center_y);
+
+	        float angle = (float)ms * 0.003f;
+	        float normalized_sin = (sin(angle) + 1.0f) / 2.0f;
+	        unsigned int color_multiplier = (unsigned int)(normalized_sin * 15.0f);
+
+	        // Color perimeter only
+	        unsigned int color = 0x00;
+	        if (dist_to_center >= inner_radius_sq && 
+		    dist_to_center <= outer_radius_sq ){
+		    color = 0x0F & color_multiplier;
+	        }
+
+	        int idx = y * SCREEN_WIDTH + x;
+	        cga_frame_buffer[idx] = color;
+    	    }
+        }
+        ESP_LOGI(TAG, "Finished drawing circle.");
+
 	// Temporary for dumping circle data
 	    
 	printf("\n---START_FRAME---\n");
@@ -167,7 +175,7 @@ void app_main()
 	}
 	printf("---END_FRAME---\n");
 
-	vTaskDelay(pdMS_TO_TICKS(3000));
+	vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
 

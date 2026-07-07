@@ -1,6 +1,7 @@
 import sys
+import cv2
 import numpy as np
-from PIL import Image  # Ensure pillow is installed: pip install pillow
+from PIL import Image  
 
 CGA_PALETTE = {
     0x00: (0, 0, 0),       # Black
@@ -12,7 +13,7 @@ CGA_PALETTE = {
     0x06: (170, 85, 0),    # Brown
     0x07: (170, 170, 170), # Light Gray
     0x08: (85, 85, 85),    # Dark Gray
-    0x09: (85, 85, 255),   # Light Blue 👈 (Our target circle ring color)
+    0x09: (85, 85, 255),   # Light Blue 
     0x0A: (85, 255, 85),   # Light Green
     0x0B: (85, 255, 255),  # Light Cyan
     0x0C: (255, 85, 85),   # Light Red
@@ -34,7 +35,7 @@ def listen_and_render():
 
     try:
         for raw_line in sys.stdin:
-            print(raw_line, end="") # Keeps your standard ESP_LOG visible
+            print(raw_line, end="") # Keeps standard ESP_LOG visible
             line = raw_line.strip()
             
             if "---START_FRAME---" in line:
@@ -46,7 +47,6 @@ def listen_and_render():
                 inside_frame = False
                 if len(frame_lines) >= HEIGHT:
                     process_frame(frame_lines)
-                    print("\n[SUCCESS] Image saved to cga_output.png! You can exit via Ctrl+C.")
                 continue
                 
             if inside_frame and line:
@@ -54,19 +54,22 @@ def listen_and_render():
                     frame_lines.append(line)
     except KeyboardInterrupt:
         print("\nExiting render engine.")
+    finally:
+        cv2.destroyAllWindows()
 
 def process_frame(lines):
-    # Create a raw byte array matching our screen bounds (Width * Height * RGB channels)
     img_data = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
-    
+
     for y, line in enumerate(lines[:HEIGHT]):
         pixels = [int(line[i:i+2], 16) for i in range(0, len(line), 2)]
         for x, pixel_byte in enumerate(pixels[:WIDTH]):
             img_data[y, x] = get_cga_color(pixel_byte)
 
-    # Use Pillow to construct a true pixel image and write it to disk
     img = Image.fromarray(img_data, 'RGB')
     img.save('cga_output.png')
+
+    cv2.imshow("CGA Monitor Stream", img_data[..., ::-1])
+    cv2.waitKey(1)
 
 if __name__ == "__main__":
     listen_and_render()
